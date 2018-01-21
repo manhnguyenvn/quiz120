@@ -1,0 +1,269 @@
+<?php $__env->startSection('content'); ?>
+
+    <h1 class="page-header">
+        <?php if($creationMode): ?> Create a <?php elseif($editingMode): ?> Edit <?php endif; ?>
+        quiz</h1>
+
+
+    <div class="row">
+        <div  class="col-md-8" id="quizEditorLoading">
+            <br/><p class="text-center"><b>Loading quiz editor</b></p>
+            <div id="quizEditorLoadingSpinner" style="position: relative; margin-top: 10px; height: 80px;"></div>
+            <br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 hidden" id="quizEditor">
+            <div role="tabpanel">
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist" id="tabLinks">
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content" id="tabContents">
+
+                </div>
+
+            </div>
+            <nav class="navbar navbar-default" style="border-top-left-radius: 0px;border-top-right-radius: 0px;border-top: 0px;">
+                <div class="container-fluid">
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <p class="navbar-text">
+                            Quick links&nbsp;
+                            <i class="fa fa-chevron-right"></i>
+                        </p>
+                        <ul class="nav navbar-nav" role="tablist" id="footerTabLinks">
+
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+            <br/>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="alert alert-warning">
+                        <i style="color: #ffb100;" class="fa fa-3x fa-lightbulb-o pull-left"></i><b>Click "Save the quiz" button</b>
+                        <p class="small">to save the quiz to database!</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="btn btn-red btn-block btn-lg save-quiz-btn" style="padding-top: 22px;padding-bottom: 22px;">Save the quiz</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 pull-right hidden-sm hidden-xs">
+            <div class="alert alert-success text-center save-quiz-hint-side-block" data-spy="affix" data-offset-top="85" >
+                <div class="text-center">
+                    <i style="color: #ffb100;" class="fa fa-5x fa-lightbulb-o"></i>
+                </div>
+                <h2>Save the quiz to Database here</h2>
+                <p>You have to click the "Save Quiz" button below to save the changes to Database. Otherwise all the changes you made will be discarded.</p>
+                <br/>
+                <div class="btn btn-lg btn-red save-quiz-btn">Save Quiz</div>
+            </div>
+        </div>
+    </div>
+    <?php if(!empty($quiz)): ?>
+        <div class="row">
+            <div class="col-md-8" style="margin-top: 20px;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title">Quiz Preview urls</div>
+                            </div>
+                            <div class="panel-body">
+                                <form class="form-inline">
+                                    <div class="form-group" style="margin-top: 10px;">
+                                        <label for="" class="control-label"><a
+                                                    href="<?php echo route('viewQuiz', array('nameString' => QuizHelpers::getUrlString($quiz->topic), 'quizId' => $quiz->id)); ?>">View
+                                                Quiz</a></label><br>
+                                        <input class="form-control preview-url-field" style="width: 400px; max-width: 100%" type="text"
+                                               value="<?php echo htmlspecialchars(rawurldecode(route('viewQuiz', array('nameString' => QuizHelpers::getUrlString($quiz->topic), 'quizId' => $quiz->id)))); ?>">
+                                        <a href="https://developers.facebook.com/tools/debug/og/object/?q=<?php echo urlencode(route('viewQuiz', array('nameString' => QuizHelpers::getUrlString($quiz->topic), 'quizId' => $quiz->id))); ?>&rescrape=true"
+                                           target="_blank" class="btn btn-default">Refresh OG data</a>
+                                    </div>
+                                </form>
+                                <?php if(!empty($quiz->results)): ?>
+                                    <h3>Results</h3>
+                                    <form class="form-inline">
+                                        <?php foreach($quiz->results as $result): ?>
+                                            <div class="form-group" style="margin-top: 10px;">
+                                                <label for="" class="control-label"><a
+                                                            href="<?php echo route('viewQuizResultLandingPage', array('nameString' => QuizHelpers::getUrlString($quiz->topic), 'quizId' => $quiz->id, 'resultId' => $result->id)); ?>"><?php echo $result->title; ?></a>
+                                                </label><br>
+                                                <input class="form-control preview-url-field"
+                                                       style="width: 400px; max-width: 100%" type="text"
+                                                       value="<?php echo htmlspecialchars(rawurldecode(route('viewQuizResultLandingPage', array('nameString' => QuizHelpers::getUrlString($quiz->topic), 'quizId' => $quiz->id, 'resultId' => $result->id)))); ?>">
+                                                <a href="https://developers.facebook.com/tools/debug/og/object/?q=<?php echo urlencode(route('viewQuizResultLandingPage', array('nameString' => QuizHelpers::getUrlString($quiz->topic), 'quizId' => $quiz->id, 'resultId' => $result->id))); ?>&rescrape=true"
+                                                   target="_blank" class="btn btn-default">Refresh OG data</a>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </form>
+                                <?php endif; ?>
+                                <br/><div class="alert alert-success">
+                                    <p>If you change the og image after publishing the quiz, Facebook may not update the image automatically because it caches the Open graph image the first time a user shares it.</p>
+                                    <p><strong>So if you need to update the cached open graph data click on "debug og tags" and use the interface provided by facebook</strong></p>
+                                    <p><a href="https://developers.facebook.com/tools/debug/og/object/" target="_blank" class="btn btn-primary">Debug OG data</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <script>
+        var isCreationMode = <?php if($creationMode): ?> true <?php else: ?> false <?php endif; ?>;
+        var isEditingMode = <?php if($editingMode): ?> true <?php else: ?> false <?php endif; ?>;
+        $('.preview-url-field').focus(function () {
+            $(this).select();
+        });
+        $('.preview-url-field').mouseup(function () {
+            return false;
+        });
+        $('.save-quiz-btn').click(function () {
+            var action = <?php if($creationMode): ?> 'create'
+            <?php elseif($editingMode): ?>
+            'edit' <?php endif; ?>;
+            $.post(BASE_PATH + '/admin/quizes/create?action=' + action + '&quizId=' + QuizData.id, {
+                quizId: QuizData['id'] || null,
+                quiz: QuizData
+            }).success(function (res) {
+                if (res.success) {
+                    lastSavedQuizDataJson= JSON.stringify(QuizData);
+                    dialogs.dialog({
+                        message: '<h3 class="text-center text-success">Quiz successfully saved!</h3><br>',
+                        title: "Quiz saved",
+                        buttons: {
+                            moveOn: {
+                                label: "Show all quizzes!",
+                                className: "btn-success",
+                                callback: function () {
+                                    window.location.href = '<?php echo route('adminViewQuizes'); ?>';
+                                }
+                            },
+                            stayBack: {
+                                label: "Close",
+                                className: "btn-default",
+                                callback: function () {
+
+                                }
+                            }
+                        }
+                    });
+                } else if (res.error) {
+                    dialogs.error('Error occured\n' + res.error);
+                } else {
+                    dialogs.error('Some Error occured');
+                }
+            }).fail(function (res) {
+                dialogs.error(res.responseText);
+            });
+        })
+    </script>
+
+    <script>
+        var Schemas = {};
+
+        var QuizData = <?php echo $quizData; ?>;
+        <?php if($quiz): ?>
+        var QuizMeta = {
+            viewQuizUrl: '<?php echo QuizHelpers::viewQuizUrl($quiz); ?>'
+        };
+        <?php endif; ?>
+        <?php if ( ! ($quiz)): ?>
+        var QuizMeta = {};
+        <?php endif; ?>
+
+        //If forceLogin not set for the quiz, use the global config for forceLogin
+        if (!QuizData.settings || !QuizData.settings.forceLogin) {
+            QuizData.settings = {};
+            QuizData.settings.forceLogin = '<?php echo $config['quiz']['forceLogin']; ?>';
+        }
+
+        function touchupQuizData() {
+            QuizData.active = (QuizData.active === 'true' || QuizData.active === true) ? true : false;
+            //assign indexes to questions
+            for(var i in QuizData.questions) {
+                //QuizData.questions[i].id = i;
+                QuizData.questions[i].skippable = (QuizData.questions[i].skippable === 'true' || QuizData.questions[i].skippable === true) ? true : false;
+                QuizData.questions[i].index = i;
+                //assign indexed to choices
+                for(var j in QuizData.questions[i].choices) {
+                    //QuizData.questions[i].choices[j].id = j;
+                    if(QuizData.questions[i].choices[j].correct !== undefined) {
+                        QuizData.questions[i].choices[j].correct = (QuizData.questions[i].choices[j].correct === 'true' || QuizData.questions[i].choices[j].correct === true) ? true : false;
+                    }
+                }
+            }
+        }
+        touchupQuizData();
+
+        var lastSavedQuizDataJson= JSON.stringify(QuizData);
+
+        (function() {
+            var quizSchema = <?php echo isset($quizSchema) ? $quizSchema : 'null'; ?>;
+            var questionSchema = <?php echo isset($questionSchema) ? $questionSchema : 'null'; ?>;
+            var choiceSchema = <?php echo isset($choiceSchema) ? $choiceSchema : 'null'; ?>;
+            var resultSchema = <?php echo isset($resultSchema) ? $resultSchema : 'null'; ?>;
+            var settingsSchema = <?php echo isset($settingsSchema) ? $settingsSchema : 'null'; ?>;
+            Schemas = {
+                'quizSchema': quizSchema,
+                'settingsSchema': settingsSchema,
+                'questionSchema': questionSchema,
+                'choiceSchema': choiceSchema,
+                'resultSchema': resultSchema,
+                'ogImagesSchema': quizSchema.ogImages
+            };
+            Schemas.questionSchema.choices.items.properties = choiceSchema;
+            delete Schemas.quizSchema.questions;
+            delete Schemas.quizSchema.results;
+            delete Schemas.quizSchema.ogImages;
+            delete Schemas.quizSchema.settingsSchema;
+            //Schemas.quizSchema.questions.items.properties = questionSchema;
+        })();
+    </script>
+
+<?php $__env->stopSection(); ?>
+
+
+<?php $__env->startSection('foot'); ?>
+    @parent
+
+    <script src="<?php echo asset('js/admin/admin.js'); ?>"></script>
+    <script src="<?php echo asset('js/admin/createQuiz.js'); ?>"></script>
+
+    <?php if(App::isLocal()): ?>
+        <script data-main="<?php echo asset('js/admin/createQuiz/init.js'); ?>"
+                src="<?php echo asset('bower_components/requirejs/require.js'); ?>"></script>
+    <?php else: ?>
+        <script data-main="<?php echo asset('js/admin/createQuiz/bundle.min.js'); ?>"
+                src="<?php echo asset('bower_components/requirejs/require.js'); ?>"></script>
+    <?php endif; ?>
+
+    <script>
+
+        window.onbeforeunload = function(){
+            var message = isCreationMode ? 'You haven\'t saved this quiz yet. Click "Create quiz" button to save the quiz.' : "You have made some changes in the Quiz that are not saved. You have to click the 'Save the quiz' button at the bottom to save the changes."
+            var newQuizDataJson = JSON.stringify(QuizData);
+            if(lastSavedQuizDataJson != newQuizDataJson) {
+                return message;
+            }
+        };
+    </script>
+
+    <script>
+        (function(){
+            var spinner = new Spinner().spin();
+            $('#quizEditorLoadingSpinner').append(spinner.el);
+        })();
+    </script>
+    <?php $__env->stopSection(); ?>
+
+
+
+<?php echo $__env->make('admin/layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

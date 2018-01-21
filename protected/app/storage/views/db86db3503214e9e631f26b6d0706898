@@ -1,0 +1,57 @@
+<?php $__env->startSection('content'); ?>
+	<!-- Page Heading -->
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">
+				Quiz Config
+			</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+
+		</div>
+	</div>
+	<!-- /.row -->
+<script>
+	var quizConfigSchema = <?php echo isset($quizConfigSchema) ? $quizConfigSchema : 'null'; ?>;	
+	var quizConfigData = <?php echo isset($quizConfigData) ? $quizConfigData : 'null'; ?>;	
+</script>
+<div class="row">
+	<div class="col-md-10">
+		<div class="panel panel-info">
+			<div class="panel-heading">Quiz Configuration</div>
+			<div class="panel-body">
+				<div class="" id="configFormContainer">
+					<form class="quiz-form-common" action="" id="configForm"></form>
+					<div class="form-results-box" id="configFormResult"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="<?php echo asset('js/admin/admin.js'); ?>"></script>
+
+<script>
+	vent.on('config-form-submitted', function(){
+		$.post('<?php echo route('adminConfigQuiz'); ?>', {
+			quizConfig: quizConfigData
+		}).success(function(res){
+			if(res.success) {
+				dialogs.success('Config Saved');
+			} else if(res.error) {
+				dialogs.error('Error occured\n' + res.error);
+			} else {
+				dialogs.error('Some Error occured');
+			}
+		}).fail(function(res){
+			dialogs.error(res.responseText);
+		});
+	})
+</script>
+
+<script src="<?php echo asset('js/admin/quizConfig.js'); ?>"></script>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('admin/layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

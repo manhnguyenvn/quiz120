@@ -1,0 +1,43 @@
+{
+  "widgets": [
+    {
+      "id": "sideBar",
+      "name": "Sidebar"
+    },
+    {
+      "id": "footer",
+      "name": "Footer",
+      "widgets": []
+    },
+    {
+      "id": "belowQuiz",
+      "name": "Below quiz"
+    },
+    {
+      "id": "homeHeader",
+      "name": "Home header",
+      "widgets": []
+    },
+    {
+      "id": "aboveQuizzesList",
+      "name": "Above Quizzes list"
+    },
+    {
+      "id": "belowQuizzesList",
+      "name": "Below quizzes list"
+    },
+    {
+      "id": "commonFooterSection",
+      "name": "Common footer section"
+    },
+    {
+      "id": "navbarLinks",
+      "name": "Links in navbar",
+      "widgets": []
+    },
+    {
+      "id": "aboveQuizQuestion",
+      "name": "Above quiz question"
+    }
+  ]
+}

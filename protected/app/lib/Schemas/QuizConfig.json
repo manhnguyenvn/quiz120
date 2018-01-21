@@ -1,0 +1,39 @@
+{
+	
+  "forceLogin" : {
+	  "type": "text",
+	  "title": "Force Login",
+	  "description": "Require user to login by default while taking a quiz. Necessary for tracking users of a quiz. (Could be changed for each quiz)",
+	  "required": true,
+	  "enum": [
+		  "disabled",
+		  "on-quiz-start",
+		  "before-result"
+	  ]
+  },
+  "loginPromptMessageOnQuizStart": {
+	  "type": "text",
+	  "title": "'On quiz start' Login prompt message",
+	  "description": "Message to be shown to the user asking for logging in on quiz start. (Leave it empty to use default message setting in 'Config' menu)"
+  },
+  "loginPromptMessageBeforeResult": {
+	  "type": "text",
+	  "title": "'Before result' Login prompt message",
+	  "description": "Message to be shown to the user asking for logging in before viewing result. (Leave it empty to use default message setting in 'Config' menu)"
+  },
+  "showFacebookComments" : {
+	"type": "boolean",
+	"title": "Enable Facebook comments for quizzes?",
+	"description": "Display Facebook comments box below quiz results after a user finishes a quiz"
+  },
+  "showSharePromptModal" : {
+	"type": "boolean",
+	"title": "Show share prompt modal",
+	"description": "Show share prompt modal after quiz result is shown to the user"
+  },
+  "showPageLikePrompt" : {
+	"type": "boolean",
+	"title": "Show page-like prompt",
+	"description": "Show facebook page-like prompt below quiz result"
+  }
+}

@@ -1,0 +1,5 @@
+[2015-03-30 06:20:58] local.ERROR: 500 - syntax error, unexpected ';' @ /admin/quizes/create
+exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected ';'' in /Users/jitheshgopan/jithesh/work/Projects/quiz-for-sale/app/storage/views/c6cf2c20372f0b41f401700345703f27:99
+Stack trace:
+#0 [internal function]: Illuminate\Exception\Handler->handleShutdown()
+#1 {main} [] []

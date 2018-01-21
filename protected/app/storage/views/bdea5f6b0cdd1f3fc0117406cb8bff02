@@ -1,0 +1,11 @@
+<div class="footer">
+	&copy; <?php echo $config['main']['siteName']; ?>
+
+	<?php if(!empty($widgets['footer'])): ?>
+		<?php foreach($widgets['footer'] as $widget): ?>
+			<?php echo $widget['content']; ?>
+
+		<?php endforeach; ?>
+	<?php endif; ?>
+
+</div>

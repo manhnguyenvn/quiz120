@@ -1,0 +1,33 @@
+<?php $__env->startSection('head'); ?>
+    @parent
+    <?php echo Rapyd::head(); ?>
+
+    <style>
+        .btn-toolbar h2 {
+            margin-top: 0px;
+        }
+    </style>
+<?php echo $__env->yieldSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+    <br/>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Categories
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div>
+                        <a class="btn btn-success" href="<?php echo route('adminCategoriesAddEdit'); ?>"><i class="fa fa-plus"></i> Create category</a>
+                    </div>
+                    <?php echo $grid; ?>
+
+                </div>
+            </div>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('admin/layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

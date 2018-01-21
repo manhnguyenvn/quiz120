@@ -1,0 +1,36 @@
+<h4 class="text-center quiz-progress-text">{{__ "question"}} {{questionNumber}} / {{totalQuestions}}</h4>
+<h2 class="quiz-question-title">{{question}}</h2>
+<div class="row">
+	<div class="col-md-12">
+		{{#if image}}
+			<div class="text-center">
+				<img class="quiz-question-img" src="{{asset image}}" alt="">
+			</div>
+		{{/if}}
+		{{#if description}}
+			<div class="quiz-question-description">
+				{{{description}}}
+			</div>
+		{{/if}}
+		<div class="grid-menu clearfix">
+			<div class="choices-section">
+                <div class="right-answer-response question-answer-response">
+					<h2>{{__ "correct"}}</h2>
+					<div>{{__ "itsTheCorrectAnswer"}}</div>
+                </div>
+                <div class="wrong-answer-response question-answer-response">
+                    <h2>{{__ "wrong"}}</h2>
+                    <div>{{__ "theCorrectAnswerIs"}}</div>
+                </div>
+                <div class="choices-box-container"></div>
+                <div class="text-center proceed-after-answer-response-block">
+                    <div class="btn btn-white proceed-after-answer-response-btn"><span>{{__ "okNext"}}</span></div>
+				</div>
+			</div>
+		</div>
+
+		{{#if skippable}}
+		<div class="text-right"><div class="btn btn-icon-right skip-question-btn"><span>{{__ "skip"}}</span></div></div>
+		{{/if}}
+	</div>
+</div>

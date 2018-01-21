@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="<?php echo App::getLocale(); ?>">
+
+<head>
+
+   <?php $__env->startSection('head'); ?>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<?php if(!empty($config['main']['favicon'])): ?>
+			<link rel="shortcut icon" href="<?php echo htmlspecialchars(asset($config['main']['favicon'])); ?>">
+		<?php endif; ?>
+
+    <?php if(!empty($title)): ?>
+        <title><?php echo htmlspecialchars($title); ?></title>
+    <?php endif; ?>
+
+    <meta property="og:type" content="website">
+    <?php if(!empty($ogTitle)): ?>
+        <meta property="og:title" content="<?php echo htmlspecialchars($ogTitle); ?>">
+        <meta name="twitter:title" content="<?php echo htmlspecialchars($ogTitle); ?>">
+    <?php endif; ?>
+
+
+    <?php if(!empty($ogImage)): ?>
+        <meta property="og:image" content="<?php echo htmlspecialchars($ogImage); ?>">
+        <meta name="twitter:image" content="<?php echo htmlspecialchars($ogImage); ?>" />
+        <meta name="twitter:card" content="photo" />
+    <?php endif; ?>
+
+    <?php if(!empty($ogUrl)): ?>
+        <meta property="og:url" content="<?php echo htmlspecialchars($ogUrl); ?>">
+        <meta name="twitter:url" content="<?php echo htmlspecialchars($ogUrl); ?>" />
+    <?php endif; ?>
+
+    <?php if(!empty($description)): ?>
+        <meta name="description" content="<?php echo htmlspecialchars($description); ?>">
+    <?php endif; ?>
+    <?php if(!empty($ogDescription)): ?>
+        <meta property="og:description" content="<?php echo $ogDescription; ?>" />
+    <?php endif; ?>
+
+    <?php if(!empty($config['main']['siteName'])): ?>
+        <meta property="og:site_name" content="<?php echo htmlspecialchars($config['main']['siteName']); ?>">
+    <?php endif; ?>
+
+    <?php if(!empty($canonicalUrl)): ?>
+        <link rel="canonical" href="<?php echo htmlspecialchars($canonicalUrl); ?>" />
+    <?php endif; ?>
+    <!-- Custom CSS -->
+	<?php if(App::isLocal()): ?>
+		<link href="<?php echo asset('/css/main.css'); ?>" rel="stylesheet">
+	<?php else: ?>
+		<link href="<?php echo asset('/css/main.min.css'); ?>" rel="stylesheet">
+	<?php endif; ?>
+
+    <?php if(App::isLocal()): ?>
+    <link href="<?php echo asset('/themes/modern/style.css'); ?>" rel="stylesheet">
+    <?php else: ?>
+    <link href="<?php echo asset('/themes/modern/style.min.css'); ?>" rel="stylesheet">
+    <?php endif; ?>
+
+	<?php if($languageDirection == 'rtl'): ?>
+		<?php echo $__env->make('partials.rtlCss', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php endif; ?>
+
+	<?php if(!empty($navbarColor)): ?>
+		<style>
+			<?php echo $__env->make('partials.themeCss', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		</style>
+	<?php endif; ?>
+
+    <!-- Custom Fonts -->
+    <link href="<?php echo asset('/font-awesome-4.1.0/css/font-awesome.min.css'); ?>" rel="stylesheet" type="text/css">
+
+   	<!-- jQuery Version 1.11.0 -->
+   	<?php if(App::isLocal()): ?>
+    <script src="<?php echo asset('bower_components/jquery/dist/jquery.min.js'); ?>"></script>
+    <?php else: ?>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <?php endif; ?>
+    
+    <script>
+        var BASE_PATH = '<?php echo url(''); ?>';
+        var ASSET_BASE_PATH = '<?php echo asset(''); ?>';
+        window.asset = function(path) {
+            path = path || '';
+            return path.match(/^http[s]?:\/\/.*$/) ? path : ASSET_BASE_PATH + path;
+        }
+		var SiteMainConfig = <?php echo @$mainConfigJSON; ?>;
+		var SiteQuizConfig = <?php echo @$quizConfigJSON; ?>;
+		SiteQuizConfig.showSharePromptModal = (SiteQuizConfig.showSharePromptModal === "true") ? true : false;
+		SiteQuizConfig.showPageLikePrompt = (SiteQuizConfig.showPageLikePrompt === "true") ? true : false;
+		SiteQuizConfig.showFacebookComments = (SiteQuizConfig.showFacebookComments === "true") ? true : false;
+		var User = {
+			isLoggedIn: function(){
+				return (!$.isEmptyObject(this.data));
+			},
+			setData: function(data){
+				this.data = data;
+				if(this.isLoggedIn()){
+					$('body').trigger('loggedIn');
+				}
+			}
+		};
+		User.data = <?php echo isset($userData) ? $userData : '{}'; ?>;
+        <?php if(!empty($categories)): ?>
+            window.Categories = <?php echo json_encode($categories); ?>;
+        <?php endif; ?>
+	</script>
+
+	<script>
+		var languageStrings = <?php echo json_encode($languageStrings); ?>;
+		var defaultLanguageStrings = <?php echo json_encode($defaultLanguageStrings); ?>;
+		//Translation
+		function __(key){
+			if(languageStrings.hasOwnProperty(key)){
+				return languageStrings[key];
+			} else if (defaultLanguageStrings.hasOwnProperty(key)){
+				return defaultLanguageStrings[key];
+			} else {
+				return key;
+			}
+		}
+	</script>
+    
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	<script>
+		
+	  window.fbAsyncInit = function() {
+		FB.init({
+		  appId      : '<?php echo @$config['main']['social']['facebook']['appId'];?>',
+		  xfbml      : true,
+		  version    : 'v2.1',
+			cookie : true
+		});
+
+		$('body').trigger('fb-api-loaded');
+		FB.Event.subscribe('auth.statusChange', function(response) {
+		  // do something with response
+			if(response.status === "connected") {
+				$('body').trigger('loggedIn:fb');
+			}
+		});
+	  };
+
+	  (function(d, s, id){
+			 var js, fjs = d.getElementsByTagName(s)[0];
+			 if (d.getElementById(id)) {return;}
+			 js = d.createElement(s); js.id = id;
+			 js.src = "//connect.facebook.net/<?php echo $languageFbCode; ?>/sdk.js";
+			 fjs.parentNode.insertBefore(js, fjs);
+		})(document, 'script', 'facebook-jssdk');
+	</script>
+
+	<?php if(!empty($config['main']['customCode']['head'])): ?>
+		<?php echo $config['main']['customCode']['head']; ?>
+
+	<?php endif; ?>
+
+	<?php echo $__env->yieldSection(); ?>
+	
+</head>
+
+<body>
+	<div id="fb-root"></div>
+
+        <div class="body_wrap <?php if(!empty($currentPage)): ?>page-<?php echo $currentPage; ?><?php endif; ?>">
+    	<div class="body-container container-fluid modern-touch">
+           
+            <?php echo $__env->make('header', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+            <div class="row">
+            	<div class="col-md-8 col-sm-7 col-xs-12 main-content-col <?php if($languageDirection == 'rtl'): ?> pull-right <?php endif; ?>">
+				<?php echo $__env->yieldContent('content'); ?>
+				</div>
+
+				<div class="col-md-4 col-sm-5 col-xs-12 sidebar-col <?php if($languageDirection == 'rtl'): ?> pull-left <?php endif; ?>">
+					<?php echo $__env->make('sidebar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			   </div>
+            </div>
+            <?php if(!empty($widgets['commonFooterSection'])): ?>
+            <div class="row">
+            	<div class="col-md-12">
+            		<div class="common-foot-widget-section">
+						<?php foreach($widgets['commonFooterSection'] as $widget): ?>
+							<?php echo $widget['content']; ?>
+
+						<?php endforeach; ?>
+					</div>
+            	</div>
+            </div>
+			<?php endif; ?>
+
+            <!-- /.container-fluid -->
+
+        </div>
+            <div class="container-fluid">
+                <div class="row footer-row">
+                    <div class="col-md-12">
+                        <?php echo $__env->make('footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                    </div>
+                </div>
+            </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+   <div id="loginModal" class="modal fade">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header text-center">
+			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only"><?php echo __('closeBtn'); ?></span></button>
+			<h4 class="modal-title"><?php echo __('loginBtn'); ?> / <?php echo __('signUpBtn'); ?></h4>
+		  </div>
+		  <div class="modal-body">
+		  	<h4 class="login-prompt-message"><?php echo __('loginBtn'); ?> / <?php echo __('signUpBtn'); ?></h4>
+			<div class="login-panel">
+				<ul>
+				  <li>
+					<div class="btn btn-fb" data-action="loginWithFB"><span><?php echo __('loginWithFB'); ?></span></div>
+				  </li>
+				</ul>
+			</div>
+			<div class="logging-in-msg">
+				<h4 class="text-center"><?php echo __('loggingYouIn'); ?></h4>
+			</div>
+		  </div>
+		</div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+   
+   <?php $__env->startSection('foot'); ?>
+   <!-- Logging in -->
+	<script>
+		(function(){
+			window.loginWithFb = function(){
+				FB.login(function(response) {
+				   if (response.authResponse) {
+					 FB.api('/me', function(response) {
+						console.log('Logged in as ' + response.name + '.');
+					 });
+				   } else {
+					 $('#loginError').removeClass('hide').html('<div class="alert alert-error">' + __('fbPermissionError') + '</div>');
+				   }
+				}, {scope: 'email'});
+			}
+			
+			var body = $('body');
+			body.on('click', '[data-action="loginWithFB"]', function(e){
+				loginWithFb();
+				e.preventDefault();
+			});
+			body.on('loggedIn', function(){
+				var loginModal = $('#loginModal');
+				loginModal.modal('hide');
+			});
+			body.on('loggedIn:fb', function(){
+				if(!User.isLoggedIn()) {
+					var loginModal = $('#loginModal');
+					loginModal.addClass("logging-in");
+					$.get(BASE_PATH + '/login/fb').success(function(response){
+						User.setData(response.user);
+					}).fail(function(response){
+						$('body').trigger('login:error', response);
+					}).always(function(){
+						loginModal.removeClass("logging-in");
+					});
+				}
+			});
+			body.on('prompt-login', function(e, message){
+				var loginModal = $('#loginModal');
+				loginModal.find('.login-prompt-message').html(message);
+				loginModal.modal('show');
+			});
+		})();
+		
+	</script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="<?php echo asset('/themes/modern/js/libs/modernizr.min.js'); ?>"></script>
+	<script src="<?php echo asset('/themes/modern/js/libs/bootstrap.min.js'); ?>"></script>
+
+	   <?php if(!empty($config['main']['customCode']['foot'])): ?>
+		   <?php echo $config['main']['customCode']['foot']; ?>
+
+	   <?php endif; ?>
+
+	<?php echo $__env->yieldSection(); ?>
+</body>
+
+</html>

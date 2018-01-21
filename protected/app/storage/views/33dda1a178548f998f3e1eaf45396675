@@ -1,0 +1,14 @@
+<?php if(!empty($widgets['sideBar'])): ?>
+	<?php foreach($widgets['sideBar'] as $widget): ?>
+		<div class="sidebar-item">
+		<?php echo $widget['content']; ?>
+
+		</div>
+	<?php endforeach; ?>
+<?php endif; ?>
+
+<?php /*
+<?php if(@$currentPage == 'viewQuiz'): ?>
+<?php echo $__env->make('quizes/quizesList', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php endif; ?>
+*/ ?>

@@ -1,0 +1,53 @@
+<?php $__env->startSection('foot'); ?>
+@parent
+<script src="<?php echo asset('bower_components/masonry/dist/masonry.pkgd.min.js'); ?>"></script>
+<script src="<?php echo asset('bower_components/imagesloaded/imagesloaded.pkgd.min.js'); ?>"></script>
+<script>
+	$(function(){
+		var $container = $('.quiz-items-row');
+		imagesLoaded($container, function(){
+			  var masonry = new Masonry( $container[0], {
+				  itemSelector: '.quiz-item'
+				});
+		});
+	});
+</script>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+
+	<?php if(!empty($widgets['aboveQuizzesList'])): ?>
+	<div class="quizzes-page-head-widget-section">
+		<?php foreach($widgets['aboveQuizzesList'] as $widget): ?>
+			<?php echo $widget['content']; ?>
+
+		<?php endforeach; ?>
+	</div>
+	<?php endif; ?>
+
+	<h1 class="page-header text-center">
+        <?php if(!empty($categoryName)): ?>
+            <?php echo $categoryName; ?>
+
+        <?php else: ?>
+        <?php echo $mainHeading; ?>
+
+        <?php endif; ?>
+    </h1>
+	
+	
+	<?php echo $__env->make('quizes/quizesList', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php echo $quizes->links('pagination::simple'); ?>
+
+	
+	<?php if(!empty($widgets['belowQuizzesList'])): ?>
+	<div class="quizzes-page-foot-widget-section">
+		<?php foreach($widgets['belowQuizzesList'] as $widget): ?>
+			<?php echo $widget['content']; ?>
+
+		<?php endforeach; ?>
+	</div>
+	<?php endif; ?>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

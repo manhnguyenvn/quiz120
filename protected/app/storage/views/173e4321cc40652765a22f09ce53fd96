@@ -1,0 +1,22 @@
+<?php $__env->startSection('content'); ?>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 text-center notFound-title-block well">
+            <div style="font-size: 10em;"><strong>404</strong></div>
+            <hr/>
+            <h1><?php echo __('pageNotFound'); ?></h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="text-center"><strong><?php echo __('latestQuizzes'); ?></strong></h3>
+            <?php echo $__env->make('quizes/quizesList', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+            <?php if(is_array($quizes) && count($quizes)): ?>
+            <div class="text-center">
+                <br/>
+                <a href="<?php echo route('quizes'); ?>" class="btn btn-primary"><span><?php echo __('viewMoreQuizzes'); ?></span></a>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

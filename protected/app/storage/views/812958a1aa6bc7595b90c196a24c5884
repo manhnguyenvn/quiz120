@@ -1,0 +1,34 @@
+<?php $__env->startSection('head'); ?>
+    @parent
+    <?php echo Rapyd::head(); ?>
+
+    <style>
+        .btn-toolbar h2 {
+            margin-top: 0px;
+        }
+    </style>
+<?php echo $__env->yieldSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+    <div class="row">
+        <div class="col-md-6">
+            <br/>
+            <?php echo $edit->header; ?>
+
+            <div class="well">
+
+                    <?php echo $edit->message; ?>
+
+
+                    <?php if(!$edit->message): ?>
+                        Name: <?php echo $edit->field('name'); ?>
+
+                        <p class="bg-danger"><?php echo $edit->field('name')->message; ?></p>
+                    <?php endif; ?>
+                    <?php echo $edit->footer; ?>
+
+            </div>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('admin/layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

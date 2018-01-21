@@ -1,0 +1,148 @@
+<?php $__env->startSection('content'); ?>
+
+	<style>
+		.share-rate-low {
+			color: #999;
+		}
+		.share-rate-medium {
+			color: #87b45e;
+		}
+		.share-rate-fair {
+			color: #ed6300;
+		}
+		.share-rate-high {
+			color: #ef1a00;
+		}
+	</style>
+
+
+<h2 class="page-header">
+	Viewing quizzes
+</h2>
+
+<div class="row">
+	<div class="col-md-12">
+		<?php if($search): ?>
+			<h4>Searching for <small>"<?php echo $search; ?>"</small></h4>
+		<?php endif; ?>
+		<div class="table-responsive">
+		<?php if(!empty($quizes)): ?>
+			<table class="table table-bordered table-striped">
+				<tr>
+					<td colspan="42" class="active">
+						<form class="form-inline" action="<?php echo route('adminViewQuizes'); ?>">
+                            <a class="btn btn-success" href="<?php echo route('adminCreateQuiz'); ?>"><i class="fa fa-plus"></i> Create new Quiz</a> &nbsp;
+							<div class="form-group">
+								<input type="text" name="search" class="form-control" id="searchField" placeholder="Search quizzes" value="<?php echo $search; ?>">
+							</div>
+							<input type="submit" class="btn btn-default" value="Search"/>
+						</form>
+					</td>
+				</tr>
+				<tr class="">
+
+					<th style="width: 50px;">Photo</th>
+					<th>Topic</th>
+					<th>
+						<a <?php if($sort === 'created_at'): ?> class="text-danger" <?php endif; ?> href="<?php echo Helpers::getUrlWithQuery(array('sort' => 'created_at', 'sortType' => ($sortType == 'asc') ? 'desc' : 'asc')); ?>">Created on <?php if($sort === 'created_at'): ?>
+
+								<?php if($sortType === 'asc'): ?>
+									<i class="fa fa-caret-up">
+										<?php else: ?>
+											<i class="fa fa-caret-down">
+												<?php endif; ?>
+											</i>
+								<?php endif; ?>
+						</a>
+					</th>
+					<th>
+						<a <?php if($sort === 'created_at'): ?> class="text-danger" <?php endif; ?> href="<?php echo Helpers::getUrlWithQuery(array('sort' => 'shareRate', 'sortType' => ($sortType == 'asc') ? 'desc' : 'asc')); ?>">Sharing rate <?php if($sort === 'shareRate'): ?>
+
+								<?php if($sortType === 'asc'): ?>
+									<i class="fa fa-caret-up">
+										<?php else: ?>
+											<i class="fa fa-caret-down">
+												<?php endif; ?>
+											</i>
+								<?php endif; ?>
+						</a>
+					</th>
+					<th>Active</th>
+					<th>Actions</th>
+				</tr>
+		<?php $__empty_1 = true; foreach(@$quizes as $quiz): $__empty_1 = false; ?>
+			<tr>
+
+				<td><a target="_blank" href="<?php echo QuizHelpers::viewQuizUrl($quiz); ?>"><img src="<?php echo asset($quiz->image); ?>" alt="" width="120"></a></td>
+				<td width="40%"><h5 style="line-height: 1.5em;"><a style="color: #333;" target="_blank" href="<?php echo QuizHelpers::viewQuizUrl($quiz); ?>"><?php echo $quiz->topic; ?></a></h5></td>
+				<td><?php echo Helpers::prettyTime($quiz->created_at, false); ?></td>
+				<td><h4 style="margin-top: 0px;" class="share-rate-<?php echo $quiz->shareRateRange; ?>"><?php echo $quiz->shareRate; ?>%</h4>
+					<div class="progress" style="height: 1em;">
+						<div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="<?php echo $quiz->shareRate; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $quiz->shareRate; ?>%">
+						</div>
+					</div>
+				</td>
+				<td><?php if($quiz->active): ?>
+					<div class="label label-success">Active</div>
+				<?php else: ?>
+					<div class="label label-danger">Inactive</div>
+				<?php endif; ?>
+				</td>
+				<td>
+					<a href="<?php echo route('adminCreateQuiz', array('action' => 'edit', 'quizId' => $quiz->id)); ?>" class="btn btn-sm btn-success" role="button" data-toggle="tooltip" title="Edit quiz"><i class="fa fa-edit"></i></a>
+					<a href="<?php echo route('adminQuizUsers'); ?>?quizId=<?php echo $quiz->id; ?>" class="btn btn-sm btn-warning" role="button" data-toggle="tooltip" title="View users"><i class="fa fa-users"></i></a>
+					<a href="javascript:void(0)" data-quiz-id="<?php echo $quiz->id; ?>" class="btn btn-sm btn-danger quiz-delete-btn" role="button" title="Delete quiz" data-toggle="tooltip" title="Delete quiz"><i class="fa fa-times"></i></a>
+					<!--<a href="#" class="btn btn-danger" role="button"><i class="fa fa-trash-o"></i></a>-->
+				</td>
+			</tr>
+		<?php endforeach; if ($__empty_1): ?>
+			<tr><td colspan="42" class="text-center">
+					<br/>
+					<?php if($search): ?>
+						<div class="alert alert-info"><b>No quizzes matching "<?php echo $search; ?>"</b></div>
+					<?php else: ?>
+						<div class="alert alert-info"><b>No quizzes yet!</b></div>
+					<?php endif; ?>
+				</td></tr>
+		<?php endif; ?>
+	</table>
+		</div>
+		<br><?php echo $quizes->links(); ?>
+
+	<?php endif; ?>
+	</div>
+	<script>
+		$(function(){
+			$('body').on('click', '.quiz-delete-btn', function(){
+				var quizId = $(this).data('quizId');
+				dialogs.confirm("Are you sure to delete the quiz?", function(confirm){
+					if(confirm){
+						$.post('<?php echo route('adminDeleteQuiz'); ?>', {
+							quizId : quizId
+						}).success(function (res) {
+							if (res.success) {
+								dialogs.success('Quiz Deleted', function () {
+									window.location.href = '<?php echo route('adminViewQuizes'); ?>';
+								});
+							} else if (res.error) {
+								dialogs.error('Error occured\n' + res.error);
+							} else {
+								dialogs.error('Some Error occured');
+							}
+						}).fail(function (res) {
+							dialogs.error(res.responseText);
+						});
+					}
+				})
+			});
+		})
+
+
+        $(function(){
+           $('[data-toggle="tooltip"]').tooltip();
+        });
+	</script>
+</div>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('admin/layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

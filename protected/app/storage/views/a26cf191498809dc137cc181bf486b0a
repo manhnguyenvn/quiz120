@@ -1,0 +1,9 @@
+<div class="row quiz-items-row">
+	<?php $__empty_1 = true; foreach($quizes as $quiz): $__empty_1 = false; ?>
+		<?php echo $__env->make('quizes/quizItem', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+	<?php endforeach; if ($__empty_1): ?>
+		<div class="col-md-12">
+            <p class="text-center"><?php echo __('noQuizzesYet'); ?></p>
+        </div>
+	<?php endif; ?>
+</div>

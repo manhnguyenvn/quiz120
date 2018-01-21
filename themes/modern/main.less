@@ -1,0 +1,161 @@
+.boxed-white {
+    background: #fff;
+  	color: #333333;
+}
+.boxed-white.dropdown{
+	margin-bottom: 0px;
+}
+.boxed-white.dropdown > li {
+    border-right: 1px solid rgba(237, 246, 250, 0.65);
+}
+.boxed-white a {
+    color: #637D88;
+}
+.boxed-white input.menu-search-field {
+    background: #f0f0f0;
+    color: #999;
+}
+.boxed-white .menu-search-submit {
+    background: none;
+    color: #ccc;
+}
+.boxed-white .menu-search-field::-webkit-input-placeholder {font-size: @font-size; font-weight:300; text-transform:none; color:#ccc;}
+.boxed-white .menu-search-field:-moz-placeholder {font-size: @font-size; font-weight:300; text-transform:none; color:#ccc;}
+.boxed-white .menu-search-field:-ms-input-placeholder {font-size: @font-size; font-weight:300; text-transform:none; color:#ccc;}
+
+.fixed-menu-padding-adjustment {
+	display: none;
+	height: 60px;
+}
+#topmenu.fixed + .fixed-menu-padding-adjustment {
+	display: block;
+}
+#topmenu {
+	&.fixed {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 1000;
+	}
+	.dropdown {
+		.menu-toggle-block {
+			display: none;
+		}
+	}
+	.menu-icon-box{
+		background: rgba(0, 0, 0, 0.05);
+	}
+	.menu-icon{
+		margin-right: 0px;
+		overflow: visible;
+		color: #fff;
+	}
+	.menu-toggle {
+		background: rgba(0,0,0,.05);
+    	float: right;
+	}
+	#headerUserMenu {
+		#headerUserLoginLink {
+			display: block;
+		}
+		#headerUserLogoutLink {
+			display: none;
+		}
+		&.logged-in {
+			#headerUserLogoutLink{
+				display: block;
+			}
+			#headerUserLoginLink {
+				display: none;
+			}
+		}
+        #userProfilePicture {
+          vertical-align: middle;
+          overflow: visible;
+          margin-right: 10px;
+        }
+	}
+	#headerUserLoginLink > span{
+		background: #FF5F1A;
+		color: #fff;
+		padding: 10px 20px;
+	}
+}
+
+#loginModal {
+	.modal-body{
+		padding-top: 30px;
+		padding-bottom: 30px;
+	}
+	.login-prompt-message {
+		text-align: center;
+		font-weight: bold;
+		margin:;
+	}
+
+	.login-panel {
+		text-align: center;
+		padding: 30px 30px;
+		max-width: 400px;
+		background: #eee;
+		border-radius: 6px;
+		margin: 0px auto;
+		border: solid 1px #eee;
+	}
+
+	.login-panel>ul>li {
+		margin: 10px 0px;
+	}
+	
+	.logging-in-msg {
+		display: none;
+	}
+	
+	&.logging-in {
+		.login-prompt-message, .login-panel {
+			display: none;
+		}
+		.logging-in-msg {
+			display: block;
+		}
+	}
+}
+
+.pager li > a, .pager li > span{
+  font-weight: bold;
+  padding: 13px 30px;
+  margin: 5px;
+  border-radius: 30px;
+}
+
+@media (max-width: 767px){
+	.fixed-menu-padding-adjustment{
+		height: 60px;
+	}
+	#topmenu {
+		.dropdown {
+			li{
+				width: 100%;
+				display: none;
+				border-bottom: solid 1px rgba(0, 0, 0, 0.05);
+			}
+			&.expanded li{
+				display: block;
+			}
+			.menu-toggle-block {
+				display: block;
+                height: 60px;
+                border-right: none !important;
+			}
+			.menu-level-0 > a, .menu-toggle-block > a{
+				padding: 20px;
+                height: 60px;
+			}
+            .menu-level-1 > a {
+              padding: 10px 10px;
+            }
+		}
+	}
+	
+}
